@@ -1,0 +1,52 @@
+body{
+   width: 90%;
+   margin-left: auto;
+   margin-right: auto;
+   display: grid;
+   grid-gap: 5px; 
+   grid-template-areas: "cabecalho cabecalho cabecalho"
+                        "coluna1 coluna2 coluna3"
+                        "rodape rodape rodape";
+  grid-template-columns: 50% 30% 20%;
+  grid-template-rows: 100px 400px 100px;
+}
+
+div#cabecalho {
+   background-color:gray;
+   grid-area: cabecalho;
+  
+}
+div#coluna1{
+   background-color:white;
+   grid-area: coluna1;
+   border-width: 2px;
+   border-color: black;
+   border-style: solid;
+}
+div#coluna2{
+   background-color:black;
+   color: white;
+   grid-area: coluna2;
+}
+
+div#coluna3{
+   background-color:gray;
+   grid-area: coluna3;
+   border-width: 2px;
+   border-color: black;
+   border-style: solid;
+}
+
+div#rodape{
+   background-color: gray;
+   grid-area: rodape;
+}
+
+
+
+
+
+
+
+
+
