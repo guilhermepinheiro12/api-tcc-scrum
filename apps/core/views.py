@@ -199,8 +199,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             projectJson = {
                 'id' : project.id,
                 'name' : project.name,
-                'from' : project.dateBegin,
-                'to' : project.dateFinished,
+                'dateBegin' : project.dateBegin,
+                'dateFinished' : project.dateFinished,
                 'totalTasks' : str(totalTasks),
                 'totalFinished' : str(totalFinished),
                 'clientName' : project.client,
@@ -227,8 +227,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projectJson = {
             'id' : project.id,
             'name' : project.name,
-            'from' : project.dateBegin,
-            'to' : project.dateFinished,
+            'dateBegin' : project.dateBegin,
+            'dateFinished' : project.dateFinished,
             'totalTasks' : str(totalTasks),
             'totalFinished' : str(totalFinished),
             'clientName' : project.client,
@@ -258,8 +258,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             totalFinished = len(tasksDone)
             sprintJson = {'id' : sprint.id,
                             'name' : sprint.name,
-                            'from' : sprint.dateBegin,
-                            'to' : sprint.dateFinished,
+                            'dateBegin' : sprint.dateBegin,
+                            'dateFinished' : sprint.dateFinished,
                             'finished' : sprint.finished,
                             'project' : sprint.project.id,
                             'tasks': tasksInfo.data}
@@ -268,8 +268,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projectJson = {
                             'id' : project.id,
                             'name' : project.name,
-                            'from' : project.dateBegin,
-                            'to' : project.dateFinished,
+                            'dateBegin' : project.dateBegin,
+                            'dateFinished' : project.dateFinished,
                             'sprints': AllsprintsInfo,
                             'totalTasks' : str(totalTasks),
                             'totalFinished' : str(totalFinished),
