@@ -30,7 +30,7 @@ class Task(models.Model):
     description = models.CharField('description', max_length=90)
     dateBegin = models.DateField('dateBegin')
     dateFinished = models.DateField('dateFinished')
-    member = models.ForeignKey('member', on_delete=models.CASCADE,)
+    member = models.ManyToManyField('member', related_name="taskMember", blank=True)
     status = models.ForeignKey('Status', on_delete=models.CASCADE,)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE,)
 
