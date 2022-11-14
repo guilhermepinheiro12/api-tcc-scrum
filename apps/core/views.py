@@ -184,10 +184,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get']) 
     def getProjects(self, request):
         projects = Project.objects.all()
-        response = ProjectSerializer(projects, many=True)
+        AllProjectsInfo = []
+        for project in projects:
+            projectJson = {
+                'id' : project.id,
+                'name' : project.name,
+                'from' : project.dateBegin,
+                'to' : project.dateFinished,
+                'clientName' : project.client,
+                'clientContact' : project.contactClient,
+                }
+            AllProjectsInfo.append(projectJson)
+            
         return Response({
                         'success' : True,
-                        'project' : response.data})
+                        'projects' : AllProjectsInfo})
     
     @action(detail=True, methods=['get']) 
     def getProject(self, request, pk):
@@ -206,23 +217,31 @@ class ProjectViewSet(viewsets.ModelViewSet):
         sprints = Sprint.objects.filter(project=pk)
         sprintsInfo = SprintSerializer(sprints, many=True)
         AllsprintsInfo = []
+        totalTasks = 0
+        totalFinished = 0
         for sprint in sprints:
+            sprintsInfo = SprintSerializer(sprint)
             tasks = Task.objects.filter(sprint = sprint.id)
+            totalTasks = len(tasks)
             tasksInfo = TaskSerializer(tasks, many=True)
+            tasksDone = Task.objects.filter(sprint = sprint.id, status = 2)
+            totalFinished = len(tasksDone)
             sprintJson = {'id' : sprint.id,
                             'from' : sprint.dateBegin,
                             'to' : sprint.dateFinished,
                             'finished' : sprint.finished,
-                            'project' : sprint.project,
+                            'project' : sprint.project.id,
                             'tasks': tasksInfo.data}
             AllsprintsInfo.append(sprintJson)
-
+            
         projectJson = {
                             'id' : project.id,
                             'name' : project.name,
                             'from' : project.dateBegin,
                             'to' : project.dateFinished,
-                            'sprints': str(AllsprintsInfo),
+                            'sprints': AllsprintsInfo,
+                            'totalTasks' : str(totalTasks),
+                            'totalFinished' : str(totalFinished),
                             'clientName' : project.client,
                             'clientContact' : project.contactClient,
                         }
