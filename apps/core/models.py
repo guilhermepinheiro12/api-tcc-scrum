@@ -19,6 +19,7 @@ class Requirement(models.Model):
     project = models.ForeignKey('project', on_delete=models.CASCADE) 
 
 class Sprint(models.Model):
+    name = models.CharField('name', max_length=90)
     dateBegin = models.DateField('dateBegin')
     dateFinished = models.DateField('dateFinished')
     finished = models.BooleanField(default=False)

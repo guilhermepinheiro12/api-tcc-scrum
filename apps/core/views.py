@@ -184,13 +184,25 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get']) 
     def getProjects(self, request):
         projects = Project.objects.all()
+        
         AllProjectsInfo = []
         for project in projects:
+            sprints = Sprint.objects.filter(project=project.id)
+            totalTasks = 0
+            totalFinished = 0
+            for sprint in sprints:
+                tasks = Task.objects.filter(sprint = sprint.id)
+                totalTasks += len(tasks)
+                tasksDone = Task.objects.filter(sprint = sprint.id, status = 2)
+                totalFinished += len(tasksDone)
+                
             projectJson = {
                 'id' : project.id,
                 'name' : project.name,
                 'from' : project.dateBegin,
                 'to' : project.dateFinished,
+                'totalTasks' : str(totalTasks),
+                'totalFinished' : str(totalFinished),
                 'clientName' : project.client,
                 'clientContact' : project.contactClient,
                 }
@@ -202,11 +214,29 @@ class ProjectViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get']) 
     def getProject(self, request, pk):
-        project = Project.objects.filter(id=pk)
-        response = ProjectSerializer(project, many=True)
+        project = Project.objects.get(id=pk)
+        sprints = Sprint.objects.filter(project=project.id)
+        totalTasks = 0
+        totalFinished = 0
+        for sprint in sprints:
+            tasks = Task.objects.filter(sprint = sprint.id)
+            totalTasks += len(tasks)
+            tasksDone = Task.objects.filter(sprint = sprint.id, status = 2)
+            totalFinished += len(tasksDone)
+                
+        projectJson = {
+            'id' : project.id,
+            'name' : project.name,
+            'from' : project.dateBegin,
+            'to' : project.dateFinished,
+            'totalTasks' : str(totalTasks),
+            'totalFinished' : str(totalFinished),
+            'clientName' : project.client,
+            'clientContact' : project.contactClient,
+            }
         return Response({
                         'success' : True,
-                        'project' : response.data})
+                        'project' : projectJson})
 
 
     @action(detail=True, methods=['get']) 
@@ -227,6 +257,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             tasksDone = Task.objects.filter(sprint = sprint.id, status = 2)
             totalFinished = len(tasksDone)
             sprintJson = {'id' : sprint.id,
+                            'name' : sprint.name,
                             'from' : sprint.dateBegin,
                             'to' : sprint.dateFinished,
                             'finished' : sprint.finished,
