@@ -252,10 +252,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
         for sprint in sprints:
             sprintsInfo = SprintSerializer(sprint)
             tasks = Task.objects.filter(sprint = sprint.id)
-            totalTasks = len(tasks)
+            totalTasks = totalTasks + len(tasks)
             tasksInfo = TaskSerializer(tasks, many=True)
             tasksDone = Task.objects.filter(sprint = sprint.id, status = 2)
-            totalFinished = len(tasksDone)
+            totalFinished = totalFinished + len(tasksDone)
             sprintJson = {'id' : sprint.id,
                             'name' : sprint.name,
                             'dateBegin' : sprint.dateBegin,
