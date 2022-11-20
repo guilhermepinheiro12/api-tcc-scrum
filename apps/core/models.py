@@ -31,12 +31,9 @@ class Task(models.Model):
 class Status(models.Model):
     name = models.CharField('name', max_length=90)
 
-class EventType(models.Model):
-    name = models.CharField('name', max_length=90)
-
 class Event(models.Model):
     data = models.DateField('data')
-    eventType = models.ForeignKey(EventType, on_delete=models.CASCADE, blank=True, null=True)
+    eventtype = models.IntegerField('eventtype')
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, blank=True, null=True)
 
 class Project(models.Model):

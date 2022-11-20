@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Member, Function, Sprint, Event, EventType, Task, Requirement, Project, Status
+from .models import Member, Function, Sprint, Event, Task, Requirement, Project, Status
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,11 +19,6 @@ class SprintSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = "__all__"
-
-class EventTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EventType
         fields = "__all__"
 
 class TaskSerializer(serializers.ModelSerializer):

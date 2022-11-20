@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import json
 from rest_framework.decorators import action, api_view
-from .serializers import MemberSerializer, FunctionSerializer, SprintSerializer, EventSerializer, EventTypeSerializer, TaskSerializer, RequirementSerializer, ProjectSerializer, StatusSerializer
-from .models import Member, Function, Sprint, Event, EventType, Task, Requirement, Project, Status
+from .serializers import MemberSerializer, FunctionSerializer, SprintSerializer, EventSerializer, TaskSerializer, RequirementSerializer, ProjectSerializer, StatusSerializer
+from .models import Member, Function, Sprint, Event, Task, Requirement, Project, Status
 
 # Create your views here.
 
@@ -96,26 +96,6 @@ class EventViewSet(viewsets.ModelViewSet):
         return Response({
                         'success' : True,
                         'event' : response.data})
-
-class EventTypeViewSet(viewsets.ModelViewSet):
-    queryset = EventType.objects.all()
-    serializer_class = EventTypeSerializer
-    
-    @action(detail=False, methods=['get']) 
-    def getEventTypes(self, request):
-        eventtype = EventType.objects.all()
-        response = EventTypeSerializer(eventtype, many=True)
-        return Response({
-                        'success' : True,
-                        'eventType' : response.data})
-    
-    @action(detail=True, methods=['get']) 
-    def getEventType(self, request, pk):
-        eventtype = EventType.objects.filter(id=pk)
-        response = EventTypeSerializer(eventtype, many=True)
-        return Response({
-                        'success' : True,
-                        'eventType' : response.data})
 
 class StatusViewSet(viewsets.ModelViewSet):
     queryset = Status.objects.all()
