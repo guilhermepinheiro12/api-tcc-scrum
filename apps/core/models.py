@@ -11,13 +11,6 @@ class Member(models.Model):
 class Function(models.Model):
     namefunction = models.CharField('name', max_length=90)
 
-class Requirement(models.Model):
-    name = models.CharField('name', max_length=90)
-    description = models.CharField('description', max_length=90)
-    priority = models.CharField('priority', max_length=90)
-    status = models.CharField('status', max_length=90)
-    project = models.ForeignKey('project', on_delete=models.CASCADE) 
-
 class Sprint(models.Model):
     name = models.CharField('name', max_length=90)
     dateBegin = models.DateField('dateBegin')
@@ -27,10 +20,11 @@ class Sprint(models.Model):
 
 class Task(models.Model):
     name = models.CharField('name', max_length=90)
-    description = models.CharField('description', max_length=90)
+    description = models.CharField('description', max_length=200)
     dateBegin = models.DateField('dateBegin')
     dateFinished = models.DateField('dateFinished')
     member = models.ManyToManyField('member', related_name="taskMember", blank=True)
+    requirement = models.ForeignKey('Requirement', on_delete=models.CASCADE,)
     status = models.ForeignKey('Status', on_delete=models.CASCADE,)
     sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE,)
 
@@ -52,7 +46,9 @@ class Project(models.Model):
     client = models.CharField('client', max_length=90)
     contactClient = models.CharField('contactClient', max_length=90)
 
-class ProjectAllInfo(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
-    tasks = models.ForeignKey(Task, on_delete=models.CASCADE, blank=True, null=True)
-    sprint = models.ForeignKey(Sprint, on_delete=models.CASCADE, blank=True, null=True)
+class Requirement(models.Model):
+    name = models.CharField('name', max_length=90)
+    description = models.CharField('description', max_length=200)
+    priority = models.IntegerField('priority')
+    status = models.ForeignKey('Status', on_delete=models.CASCADE)
+    project = models.ForeignKey('project', on_delete=models.CASCADE)

@@ -13,7 +13,7 @@ class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
     
-    @action(detail=False, methods=['get']) 
+    @action(detail=False, methods=['get'])
     def getMembers(self, request):
         member = Member.objects.all()
         response = MemberSerializer(member, many=True)
@@ -216,6 +216,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def getProject(self, request, pk):
         project = Project.objects.get(id=pk)
         sprints = Sprint.objects.filter(project=project.id)
+        requirements = Requirement.objects.filter(project=pk)
+        requirementsInfo = RequirementSerializer(requirements, many=True)
         totalTasks = 0
         totalFinished = 0
         for sprint in sprints:
@@ -229,6 +231,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             'name' : project.name,
             'dateBegin' : project.dateBegin,
             'dateFinished' : project.dateFinished,
+            'productBacklog' : requirementsInfo.data,
             'totalTasks' : str(totalTasks),
             'totalFinished' : str(totalFinished),
             'clientName' : project.client,
@@ -246,9 +249,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projectInfo = ProjectSerializer(project)
         sprints = Sprint.objects.filter(project=pk)
         sprintsInfo = SprintSerializer(sprints, many=True)
+        requirements = Requirement.objects.filter(project=pk)
+        requirementsInfo = RequirementSerializer(requirements, many=True)
+         
+        AllProductBacklogInfo = []
         AllsprintsInfo = []
         totalTasks = 0
         totalFinished = 0
+        
         for sprint in sprints:
             sprintsInfo = SprintSerializer(sprint)
             tasks = Task.objects.filter(sprint = sprint.id)
@@ -270,6 +278,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
                             'name' : project.name,
                             'dateBegin' : project.dateBegin,
                             'dateFinished' : project.dateFinished,
+                            'productBacklog' : requirementsInfo.data,
                             'sprints': AllsprintsInfo,
                             'totalTasks' : str(totalTasks),
                             'totalFinished' : str(totalFinished),
